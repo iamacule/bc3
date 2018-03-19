@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+
+String APK_NAME = "BC3-"
+int VERSION_CODE = 0
+String VERSION_NAME = "1.0.0.0"
+String DATE = new Date().format('yyyyMMdd')
+
+project.archivesBaseName = APK_NAME + VERSION_NAME + "_" + DATE;
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "vn.mran.bc3"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.firebase:firebase-database:11.0.4'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile 'com.plattysoft.leonids:LeonidsLib:1.3.2'
+}
+
+
+apply plugin: 'com.google.gms.google-services'

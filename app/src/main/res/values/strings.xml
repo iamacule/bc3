@@ -1,0 +1,9 @@
+<resources>
+    <string name="com_name">ProArmy2018</string>
+    <string name="app_name">Bầu cua 3D 2019</string>
+    <string name="play_now">CHƠI</string>
+    <string name="exit">THOÁT</string>
+    <string name="open">MỞ</string>
+    <string name="shake">XỐC</string>
+    <string name="error_choose_money_type">Bạn không đủ tiền cược !</string>
+</resources>
