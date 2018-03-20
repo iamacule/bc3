@@ -3,7 +3,7 @@
     android:id="@+id/frMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_none"
+    android:background="@drawable/background"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -17,6 +17,6 @@
         android:shadowDy="2"
         android:shadowRadius="2"
         android:text="@string/com_name"
-        android:textColor="@color/yellow_text"
+        android:textColor="@color/red_300"
         android:textSize="@dimen/large_text_size" />
 </LinearLayout>

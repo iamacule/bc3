@@ -23,8 +23,6 @@ public class PlayPresenter {
 
     private PlayView view;
 
-    private boolean isNetworkEnable = false;
-
     private boolean run = true;
 
     private boolean isEnablePlusMoney = false;
@@ -36,7 +34,6 @@ public class PlayPresenter {
     public PlayPresenter(PlayView view) {
         this.context = (Context) view;
         this.view = view;
-        isNetworkEnable = isOnline();
 
         new PlayThread().start();
         new FireworkDelayThread().start();

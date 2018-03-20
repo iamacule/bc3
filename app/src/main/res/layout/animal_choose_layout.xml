@@ -107,7 +107,7 @@
                         android:shadowDx="3"
                         android:shadowDy="3"
                         android:shadowRadius="3"
-                        android:textColor="@color/yellow_text"
+                        android:textColor="@color/red_300"
                         android:textSize="@dimen/text_size_small" />
                 </FrameLayout>
             </FrameLayout>
@@ -146,7 +146,7 @@
                         android:shadowDx="3"
                         android:shadowDy="3"
                         android:shadowRadius="3"
-                        android:textColor="@color/yellow_text"
+                        android:textColor="@color/red_300"
                         android:textSize="@dimen/text_size_small" />
                 </FrameLayout>
             </FrameLayout>
@@ -183,7 +183,7 @@
                         android:shadowDx="3"
                         android:shadowDy="3"
                         android:shadowRadius="3"
-                        android:textColor="@color/yellow_text"
+                        android:textColor="@color/red_300"
                         android:textSize="@dimen/text_size_small" />
                 </FrameLayout>
             </FrameLayout>
@@ -229,7 +229,7 @@
                         android:shadowDx="3"
                         android:shadowDy="3"
                         android:shadowRadius="3"
-                        android:textColor="@color/yellow_text"
+                        android:textColor="@color/red_300"
                         android:textSize="@dimen/text_size_small" />
                 </FrameLayout>
             </FrameLayout>
@@ -268,7 +268,7 @@
                         android:shadowDx="3"
                         android:shadowDy="3"
                         android:shadowRadius="3"
-                        android:textColor="@color/yellow_text"
+                        android:textColor="@color/red_300"
                         android:textSize="@dimen/text_size_small" />
                 </FrameLayout>
             </FrameLayout>
@@ -305,7 +305,7 @@
                         android:shadowDx="3"
                         android:shadowDy="3"
                         android:shadowRadius="3"
-                        android:textColor="@color/yellow_text"
+                        android:textColor="@color/red_300"
                         android:textSize="@dimen/text_size_small" />
                 </FrameLayout>
             </FrameLayout>

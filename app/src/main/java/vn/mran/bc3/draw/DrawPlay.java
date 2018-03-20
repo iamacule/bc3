@@ -228,7 +228,7 @@ public class DrawPlay extends View {
                     Task.runOnUIThread(new Runnable() {
                         @Override
                         public void run() {
-                            Media.playShortSound(getContext(), R.raw.open_close);
+                            Media.playShortSound(getContext(), R.raw.shake_dice);
                             onDrawLidUpdate.onLidChanged(isLidOpened);
                         }
                     });

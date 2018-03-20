@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_none"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -161,7 +161,7 @@
                     android:shadowDy="3"
                     android:shadowRadius="3"
                     android:text="@string/shake"
-                    android:textColor="@color/yellow_text"
+                    android:textColor="@color/red_300"
                     android:textSize="@dimen/button_text_size_large_play" />
             </FrameLayout>
 
@@ -263,7 +263,7 @@
                     android:shadowDy="4"
                     android:shadowRadius="4"
                     android:singleLine="true"
-                    android:textColor="@color/yellow_text"
+                    android:textColor="@color/red_300"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
         </FrameLayout>

@@ -1,10 +1,12 @@
 package vn.mran.bc3.activity;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,8 +14,10 @@ import com.plattysoft.leonids.ParticleSystem;
 
 import vn.mran.bc3.R;
 import vn.mran.bc3.base.BaseActivity;
+import vn.mran.bc3.helper.Log;
 import vn.mran.bc3.instance.Media;
 import vn.mran.bc3.util.ResizeBitmap;
+import vn.mran.bc3.util.ScreenUtil;
 import vn.mran.bc3.util.Task;
 import vn.mran.bc3.util.TouchEffect;
 
@@ -23,6 +27,9 @@ import vn.mran.bc3.util.TouchEffect;
 public class ChooserActivity extends BaseActivity implements View.OnClickListener {
     private ImageView imgPlay;
     private ImageView imgExit;
+
+    private boolean run = true;
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     public void initLayout() {
@@ -57,34 +64,35 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
         startAnimation();
     }
 
+    private void startAnimation() {
+       Task.startNewBackGroundThread(new Thread(new Runnable() {
+           @Override
+           public void run() {
+               Task.sleep(500);
+               Task.runOnUIThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       new ParticleSystem(ChooserActivity.this, 50, R.drawable.ball_1, 1000)
+                               .setSpeedRange(0.1f, 0.25f)
+                               .emit(findViewById(R.id.lnAnimation), 100);
+                       new ParticleSystem(ChooserActivity.this, 50, R.drawable.ball_2, 1000)
+                               .setSpeedRange(0.1f, 0.25f)
+                               .emit(findViewById(R.id.lnAnimation), 100);
+                       new ParticleSystem(ChooserActivity.this, 50, R.drawable.ball_3, 1000)
+                               .setSpeedRange(0.1f, 0.25f)
+                               .emit(findViewById(R.id.lnAnimation2), 100);
+                       new ParticleSystem(ChooserActivity.this, 50, R.drawable.ball_4, 1000)
+                               .setSpeedRange(0.1f, 0.25f)
+                               .emit(findViewById(R.id.lnAnimation2), 100);
+                   }
+               });
+           }
+       }));
+    }
+
     @Override
     public int setLayout() {
         return R.layout.activity_chooser;
-    }
-
-    private void startAnimation() {
-
-        Task.postDelay(new Runnable() {
-            @Override
-            public void run() {
-                ParticleSystem ps = new ParticleSystem(ChooserActivity.this, 100, R.drawable.fire_slot, 1000);
-                ps.setScaleRange(0.7f, 1.3f);
-                ps.setSpeedModuleAndAngleRange(0.07f, 0.16f, 0, 180);
-                ps.setRotationSpeedRange(90, 180);
-                ps.setAcceleration(0.00013f, 90);
-                ps.setFadeOut(200, new AccelerateInterpolator());
-                ps.emit(findViewById(R.id.lnFire1), 100, 360000);
-
-
-                ParticleSystem ps2 = new ParticleSystem(ChooserActivity.this, 100, R.drawable.fire_slot, 1000);
-                ps2.setScaleRange(0.7f, 1.3f);
-                ps2.setSpeedModuleAndAngleRange(0.07f, 0.16f, 0, 180);
-                ps2.setRotationSpeedRange(90, 180);
-                ps2.setAcceleration(0.00013f, 90);
-                ps2.setFadeOut(200, new AccelerateInterpolator());
-                ps2.emit(findViewById(R.id.lnFire2), 100, 360000);
-            }
-        }, 1000);
     }
 
     @Override
@@ -105,4 +113,5 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
                 break;
         }
     }
+
 }
