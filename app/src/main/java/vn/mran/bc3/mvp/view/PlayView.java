@@ -7,11 +7,5 @@ package vn.mran.bc3.mvp.view;
 public interface PlayView {
     void onNetworkChanged(boolean isEnable);
 
-    void onTimeChanged(String value);
-
-    void onResultExecute(int tong);
-
-    void onAddMoney();
-
     void startFireworks();
 }

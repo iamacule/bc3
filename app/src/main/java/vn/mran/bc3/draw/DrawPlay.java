@@ -26,7 +26,7 @@ import vn.mran.bc3.util.Task;
 public class DrawPlay extends View {
 
     private final int ANIMAL_SIZE_PERCENT = 40;
-    private final int MID_POINT = 24;
+    private final int MID_POINT = 56;
     private final int ANIMAL_1_Y_POINT_1 = MID_POINT - 8;
     private final int ANIMAL_2_Y_POINT_1 = MID_POINT + 7;
     private final int SIZE = 97;

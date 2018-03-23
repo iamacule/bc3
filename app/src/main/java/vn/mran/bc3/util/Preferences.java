@@ -53,11 +53,11 @@ public final class Preferences {
         return pref.getString(key, defaultValue);
     }
 
-    public int getIntValue(String key){
+    public int getLongValue(String key){
         return pref.getInt(key,-1);
     }
 
-    public int getIntValue(String key,int defaultValue){
-        return pref.getInt(key,defaultValue);
+    public long getLongValue(String key, long defaultValue){
+        return pref.getLong(key,defaultValue);
     }
 }

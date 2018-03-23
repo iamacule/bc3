@@ -4,21 +4,19 @@ package vn.mran.bc3.model;
  * Created by Mr An on 20/12/2017.
  */
 
-public class RuleChild {
+public class Rule1 {
     public long additionalNumber;
     public String assignNumber;
     public long quantum;
-    public long rule;
     public String status;
 
-    public RuleChild() {
+    public Rule1() {
     }
 
-    public RuleChild(long additionalNumber, String assignNumber, long quantum, long rule, String status) {
+    public Rule1(long additionalNumber, String assignNumber, long quantum, String status) {
         this.additionalNumber = additionalNumber;
         this.assignNumber = assignNumber;
         this.quantum = quantum;
-        this.rule = rule;
         this.status = status;
     }
 
@@ -26,12 +24,8 @@ public class RuleChild {
         return (int) additionalNumber;
     }
 
-    public int getQuantum() {
-        return (int) quantum;
-    }
-
-    public int getRule() {
-        return (int) rule;
+    public long getQuantum() {
+        return quantum;
     }
 
     public int[] getAssignNumberArray() {

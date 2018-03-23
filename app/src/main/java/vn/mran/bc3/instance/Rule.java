@@ -15,7 +15,9 @@ import java.util.Random;
 
 import vn.mran.bc3.constant.PrefValue;
 import vn.mran.bc3.helper.Log;
-import vn.mran.bc3.model.RuleChild;
+import vn.mran.bc3.model.Rule1;
+import vn.mran.bc3.model.Rule2;
+import vn.mran.bc3.model.Rule3;
 import vn.mran.bc3.model.RuleMain;
 import vn.mran.bc3.util.Preferences;
 import vn.mran.bc3.util.Task;
@@ -41,26 +43,21 @@ public class Rule {
 
     private Preferences preferences;
 
-    private int ruleChildAdditionalNumber;
-    private int ruleChildAssignNum1;
-    private int ruleChildAssignNum2;
-    private int ruleChildAssignNum3;
-    private int ruleChildAssignNum4;
-    private int ruleChildAssignNum5;
-    private int ruleChildAssignNum6;
-    private int ruleChildQuantum;
-    private int ruleChildRule;
-    private int previousRule;
-    private String ruleChildStatus;
+    private Rule1 rule1;
+    private Rule2 rule2;
+    private Rule3 rule3;
+    private RuleMain ruleMain;
 
-    private int ruleMainQuantum;
-    private String ruleMainStatus;
+    private long currentRuleChild;
+    private long previousRuleChild;
 
     private String text;
 
     public final byte RULE_NORMAL = 0;
     public final byte RULE_MAIN = 1;
-    private byte currentRule = RULE_NORMAL;
+    public final byte RULE_RANDOM = 2;
+
+    private byte currentRule = RULE_RANDOM;
 
     //Bau, cua
     public final int[] RULE_MAIN_GONE_1 = new int[]{0, 1};
@@ -86,19 +83,29 @@ public class Rule {
     }
 
     private void initValue() {
-        ruleChildAdditionalNumber = preferences.getIntValue(PrefValue.RULE_CHILD_ADDITIONAL_NUMBER, PrefValue.DEFAULT_ADDITIONAL_NUMBER);
-        ruleChildAssignNum1 = preferences.getIntValue(PrefValue.RULE_CHILD_NUM_1, PrefValue.DEFAULT_ASSIGN_NUM_1);
-        ruleChildAssignNum2 = preferences.getIntValue(PrefValue.RULE_CHILD_NUM_2, PrefValue.DEFAULT_ASSIGN_NUM_2);
-        ruleChildAssignNum3 = preferences.getIntValue(PrefValue.RULE_CHILD_NUM_3, PrefValue.DEFAULT_ASSIGN_NUM_3);
-        ruleChildAssignNum4 = preferences.getIntValue(PrefValue.RULE_CHILD_NUM_4, PrefValue.DEFAULT_ASSIGN_NUM_4);
-        ruleChildAssignNum5 = preferences.getIntValue(PrefValue.RULE_CHILD_NUM_5, PrefValue.DEFAULT_ASSIGN_NUM_5);
-        ruleChildAssignNum6 = preferences.getIntValue(PrefValue.RULE_CHILD_NUM_6, PrefValue.DEFAULT_ASSIGN_NUM_6);
-        ruleChildQuantum = preferences.getIntValue(PrefValue.RULE_CHILD_QUANTUM, PrefValue.DEFAULT_QUANTUM);
-        ruleChildRule = preferences.getIntValue(PrefValue.RULE_CHILD_RULE, PrefValue.DEFAULT_RULE);
-        ruleChildStatus = preferences.getStringValue(PrefValue.RULE_CHILD_STATUS, PrefValue.DEFAULT_STATUS);
+        rule1 = new Rule1();
+        rule1.additionalNumber = preferences.getLongValue(PrefValue.RULE_1_ADDITIONAL_NUMBER, PrefValue.DEFAULT_ADDITIONAL_NUMBER);
+        rule1.assignNumber = preferences.getStringValue(PrefValue.RULE_1_ASSIGN_ARRAYS, PrefValue.DEFAULT_ASSIGN_ARRAYS);
+        rule1.quantum = preferences.getLongValue(PrefValue.RULE_1_QUANTUM, PrefValue.DEFAULT_QUANTUM);
+        rule1.status = preferences.getStringValue(PrefValue.RULE_1_STATUS, PrefValue.DEFAULT_STATUS);
 
-        ruleMainQuantum = preferences.getIntValue(PrefValue.RULE_MAIN_QUANTUM, PrefValue.DEFAULT_QUANTUM);
-        ruleMainStatus = preferences.getStringValue(PrefValue.RULE_MAIN_STATUS, PrefValue.DEFAULT_STATUS);
+        rule2 = new Rule2();
+        rule2.additionalNumber = preferences.getLongValue(PrefValue.RULE_2_ADDITIONAL_NUMBER, PrefValue.DEFAULT_ADDITIONAL_NUMBER);
+        rule2.assignNumber = preferences.getStringValue(PrefValue.RULE_2_ASSIGN_ARRAYS, PrefValue.DEFAULT_ASSIGN_ARRAYS);
+        rule2.quantum = preferences.getLongValue(PrefValue.RULE_2_QUANTUM, PrefValue.DEFAULT_QUANTUM);
+        rule2.status = preferences.getStringValue(PrefValue.RULE_2_STATUS, PrefValue.DEFAULT_STATUS);
+
+        rule3 = new Rule3();
+        rule3.additionalNumber = preferences.getLongValue(PrefValue.RULE_3_ADDITIONAL_NUMBER, PrefValue.DEFAULT_ADDITIONAL_NUMBER);
+        rule3.assignNumber = preferences.getStringValue(PrefValue.RULE_3_ASSIGN_ARRAYS, PrefValue.DEFAULT_ASSIGN_ARRAYS);
+        rule3.quantum = preferences.getLongValue(PrefValue.RULE_3_QUANTUM, PrefValue.DEFAULT_QUANTUM);
+        rule3.status = preferences.getStringValue(PrefValue.RULE_3_STATUS, PrefValue.DEFAULT_STATUS);
+
+        currentRuleChild = preferences.getLongValue(PrefValue.CURRENT_RULE_CHILD, PrefValue.DEFAULT_RULE);
+
+        ruleMain = new RuleMain();
+        ruleMain.quantum = preferences.getLongValue(PrefValue.RULE_MAIN_QUANTUM, PrefValue.DEFAULT_QUANTUM);
+        ruleMain.status = preferences.getStringValue(PrefValue.RULE_MAIN_STATUS, PrefValue.DEFAULT_STATUS);
 
         text = preferences.getStringValue(PrefValue.TEXT, PrefValue.DEFAULT_TEXT);
     }
@@ -120,26 +127,26 @@ public class Rule {
     }
 
     public String getRuleMainStatus() {
-        return ruleMainStatus;
+        return ruleMain.status;
     }
 
     public void setOnFireBaseDataChanged(OnFireBaseDataChanged onFireBaseDataChanged) {
         this.onFireBaseDataChanged = onFireBaseDataChanged;
     }
 
-    public void setRuleChildRule(int ruleChildRule) {
-        previousRule = this.ruleChildRule;
-        this.ruleChildRule = ruleChildRule;
-        Log.d(TAG, "ruleChildRule : " + ruleChildRule);
+    public void setRuleChildRule(int currentRuleChild) {
+        previousRuleChild = this.currentRuleChild;
+        this.currentRuleChild = currentRuleChild;
+        Log.d(TAG, "currentRuleChild : " + currentRuleChild);
     }
 
     public void resetRuleChild() {
-        ruleChildRule = previousRule;
-        Log.d(TAG, "ruleChildRule : " + ruleChildRule);
+        currentRuleChild = previousRuleChild;
+        Log.d(TAG, "currentRuleChild : " + currentRuleChild);
     }
 
-    public int getRuleChildRule() {
-        return ruleChildRule;
+    public long getCurrentRuleChild() {
+        return currentRuleChild;
     }
 
     public void setOnline(boolean online) {
@@ -161,32 +168,39 @@ public class Rule {
      */
     public int[] getResult() {
         int[] returnArrays = getRandomNumberArrays();
-        Log.d(TAG, "Rule child status on");
+        Log.d(TAG, "Rule1 child status on");
         Log.d(TAG, "Current rule : " + currentRule);
         switch (currentRule) {
             case RULE_NORMAL:
-                Log.d(TAG, "Rule normal");
+                Log.d(TAG, "Rule1 normal");
                 if (isOnline) {
-                    if (ruleChildStatus.equals(STATUS_ON)) {
-                        if (ruleChildQuantum == 0) {
-                            switch (ruleChildRule) {
-                                case 1:
-                                    Log.d(TAG, "Rule 1");
+                    switch ((int)currentRuleChild) {
+                        case 1:
+                            Log.d(TAG, "Rule1 1");
+                            if (rule1.status.equals(STATUS_ON)) {
+                                if (rule1.quantum == 0)
                                     returnArrays = getRule1();
-                                    break;
-                                case 2:
-                                    Log.d(TAG, "Rule 2");
-                                    returnArrays = getRule2();
-                                    break;
-                                case 3:
-                                    Log.d(TAG, "Rule 3");
-                                    returnArrays = getRule3();
-                                    break;
-
+                            } else {
+                                Log.d(TAG, "Rule 1 Off");
                             }
-                        }
-                    } else {
-                        Log.d(TAG, "Rule child status off");
+                            break;
+                        case 2:
+                            if (rule2.status.equals(STATUS_ON)) {
+                                if (rule2.quantum == 0)
+                                    returnArrays = getRule2();
+                            } else {
+                                Log.d(TAG, "Rule 2 Off");
+                            }
+                            break;
+                        case 3:
+                            if (rule3.status.equals(STATUS_ON)) {
+                                if (rule3.quantum == 0)
+                                    returnArrays = getRule3();
+                            } else {
+                                Log.d(TAG, "Rule 3 Off");
+                            }
+                            break;
+
                     }
                 } else {
                     Log.d(TAG, "Offline");
@@ -194,13 +208,13 @@ public class Rule {
                 break;
 
             case RULE_MAIN:
-                if (ruleMainStatus.equals(STATUS_ON)) {
-                    Log.d(TAG, "Rule Main");
-                    if (ruleMainQuantum == 0) {
+                if (ruleMain.status.equals(STATUS_ON)) {
+                    Log.d(TAG, "Rule1 Main");
+                    if (ruleMain.quantum == 0) {
                         returnArrays = getRuleMain();
                     }
                 } else {
-                    Log.d(TAG, "Rule Main status off");
+                    Log.d(TAG, "Rule1 Main status off");
                 }
                 break;
         }
@@ -211,7 +225,7 @@ public class Rule {
     }
 
     /**
-     * Rule Main
+     * Rule1 Main
      *
      * @return
      */
@@ -230,13 +244,13 @@ public class Rule {
     }
 
     /**
-     * Rule 2
+     * Rule1 2
      *
      * @return
      */
     private int[] getRule2() {
         int tong = 0;
-
+        int[] assignNumberArray = rule2.getAssignNumberArray();
         int range = 3;
         if (resultArrays.length == 0) {
             Log.d(TAG, "resultArrays length = 0");
@@ -248,27 +262,27 @@ public class Rule {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             switch (resultArrays[i]) {
                 case 0:
-                    tong += ruleChildAssignNum1;
+                    tong += assignNumberArray[0];
                     break;
                 case 1:
-                    tong += ruleChildAssignNum2;
+                    tong += assignNumberArray[1];
                     break;
                 case 2:
-                    tong += ruleChildAssignNum3;
+                    tong += assignNumberArray[2];
                     break;
                 case 3:
-                    tong += ruleChildAssignNum4;
+                    tong += assignNumberArray[3];
                     break;
                 case 4:
-                    tong += ruleChildAssignNum5;
+                    tong += assignNumberArray[4];
                     break;
                 default:
-                    tong += ruleChildAssignNum6;
+                    tong += assignNumberArray[5];
                     break;
             }
         }
 
-        tong += ruleChildAdditionalNumber;
+        tong += rule2.additionalNumber;
 
         int min = Integer.parseInt((new SimpleDateFormat("mm").format(new Date())).toString());
 
@@ -295,12 +309,13 @@ public class Rule {
     }
 
     /**
-     * Rule 1
+     * Rule1 1
      *
      * @return
      */
     private int[] getRule1() {
         int tong = 0;
+        int[] assignNumberArray = rule1.getAssignNumberArray();
 
         int range = 3;
         if (resultArrays.length <= 3) {
@@ -313,27 +328,27 @@ public class Rule {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             switch (resultArrays[i]) {
                 case 0:
-                    tong += ruleChildAssignNum1;
+                    tong += assignNumberArray[0];
                     break;
                 case 1:
-                    tong += ruleChildAssignNum2;
+                    tong += assignNumberArray[1];
                     break;
                 case 2:
-                    tong += ruleChildAssignNum3;
+                    tong += assignNumberArray[2];
                     break;
                 case 3:
-                    tong += ruleChildAssignNum4;
+                    tong += assignNumberArray[3];
                     break;
                 case 4:
-                    tong += ruleChildAssignNum5;
+                    tong += assignNumberArray[4];
                     break;
                 default:
-                    tong += ruleChildAssignNum6;
+                    tong += assignNumberArray[5];
                     break;
             }
         }
 
-        tong += ruleChildAdditionalNumber;
+        tong += rule1.additionalNumber;
         Log.d(TAG, "Tong : " + tong);
         int number = tong % 6;
         Log.d(TAG, "Number : " + number);
@@ -344,12 +359,13 @@ public class Rule {
     }
 
     /**
-     * Rule 3
+     * Rule1 3
      *
      * @return
      */
     private int[] getRule3() {
         int tong = 0;
+        int[] assignNumberArray = rule3.getAssignNumberArray();
 
         int range = 3;
         if (resultArrays.length == 0) {
@@ -362,27 +378,27 @@ public class Rule {
             Log.d(TAG, "Result array sub : " + resultArrays[i]);
             switch (resultArrays[i]) {
                 case 0:
-                    tong += ruleChildAssignNum1;
+                    tong += assignNumberArray[0];
                     break;
                 case 1:
-                    tong += ruleChildAssignNum2;
+                    tong += assignNumberArray[1];
                     break;
                 case 2:
-                    tong += ruleChildAssignNum3;
+                    tong += assignNumberArray[2];
                     break;
                 case 3:
-                    tong += ruleChildAssignNum4;
+                    tong += assignNumberArray[3];
                     break;
                 case 4:
-                    tong += ruleChildAssignNum5;
+                    tong += assignNumberArray[4];
                     break;
                 default:
-                    tong += ruleChildAssignNum6;
+                    tong += assignNumberArray[5];
                     break;
             }
         }
 
-        tong += ruleChildAdditionalNumber;
+        tong += rule3.additionalNumber;
         Log.d(TAG, "Tong : " + tong);
         int number = tong % 6;
         Log.d(TAG, "Number : " + number);
@@ -395,57 +411,43 @@ public class Rule {
     /**
      * Initialize Firebase realtime database
      */
+
     private void initFirebase() {
-        FirebaseDatabase.getInstance().getReference("BC2").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("BC3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 Task.startNewBackGroundThread(new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //Rule child
-                        RuleChild ruleChild = dataSnapshot.child("RuleChild").getValue(RuleChild.class);
-                        Log.d(TAG, "[RuleChild] [additionalNumber : " + ruleChild.additionalNumber + " ]");
-                        Log.d(TAG, "[RuleChild] [assignNumber : " + ruleChild.assignNumber + " ]");
-                        Log.d(TAG, "[RuleChild] [quantum : " + ruleChild.quantum + " ]");
-                        Log.d(TAG, "[RuleChild] [rule : " + ruleChild.rule + " ]");
-                        Log.d(TAG, "[RuleChild] [status : " + ruleChild.status + " ]");
 
-                        ruleChildAdditionalNumber = ruleChild.getAdditionalNumber();
-                        preferences.storeValue(PrefValue.RULE_CHILD_ADDITIONAL_NUMBER, ruleChildAdditionalNumber);
+                        //Rule1
+                        rule1 = dataSnapshot.child("Rule1").getValue(Rule1.class);
+                        preferences.storeValue(PrefValue.RULE_1_ADDITIONAL_NUMBER, rule1.additionalNumber);
+                        preferences.storeValue(PrefValue.RULE_1_ASSIGN_ARRAYS, rule1.getAssignNumberArray());
+                        preferences.storeValue(PrefValue.RULE_1_QUANTUM, rule1.getQuantum());
+                        preferences.storeValue(PrefValue.RULE_1_STATUS, rule1.status);
 
-                        int[] ruleChildAssignNumArray = ruleChild.getAssignNumberArray();
-                        ruleChildAssignNum1 = ruleChildAssignNumArray[0];
-                        ruleChildAssignNum2 = ruleChildAssignNumArray[1];
-                        ruleChildAssignNum3 = ruleChildAssignNumArray[2];
-                        ruleChildAssignNum4 = ruleChildAssignNumArray[3];
-                        ruleChildAssignNum5 = ruleChildAssignNumArray[4];
-                        ruleChildAssignNum6 = ruleChildAssignNumArray[5];
-                        preferences.storeValue(PrefValue.RULE_CHILD_NUM_1, ruleChildAssignNum1);
-                        preferences.storeValue(PrefValue.RULE_CHILD_NUM_2, ruleChildAssignNum2);
-                        preferences.storeValue(PrefValue.RULE_CHILD_NUM_3, ruleChildAssignNum3);
-                        preferences.storeValue(PrefValue.RULE_CHILD_NUM_4, ruleChildAssignNum4);
-                        preferences.storeValue(PrefValue.RULE_CHILD_NUM_5, ruleChildAssignNum5);
-                        preferences.storeValue(PrefValue.RULE_CHILD_NUM_6, ruleChildAssignNum6);
+                        //Rule2
+                        rule2 = dataSnapshot.child("Rule2").getValue(Rule2.class);
+                        preferences.storeValue(PrefValue.RULE_2_ADDITIONAL_NUMBER, rule2.additionalNumber);
+                        preferences.storeValue(PrefValue.RULE_2_ASSIGN_ARRAYS, rule2.getAssignNumberArray());
+                        preferences.storeValue(PrefValue.RULE_2_QUANTUM, rule2.getQuantum());
+                        preferences.storeValue(PrefValue.RULE_2_STATUS, rule2.status);
 
-                        ruleChildQuantum = ruleChild.getQuantum();
-                        preferences.storeValue(PrefValue.RULE_CHILD_QUANTUM, ruleChildQuantum);
+                        //Rule3
+                        rule3 = dataSnapshot.child("Rule3").getValue(Rule3.class);
+                        preferences.storeValue(PrefValue.RULE_3_ADDITIONAL_NUMBER, rule3.additionalNumber);
+                        preferences.storeValue(PrefValue.RULE_3_ASSIGN_ARRAYS, rule3.getAssignNumberArray());
+                        preferences.storeValue(PrefValue.RULE_3_QUANTUM, rule3.getQuantum());
+                        preferences.storeValue(PrefValue.RULE_3_STATUS, rule3.status);
 
-                        ruleChildRule = ruleChild.getRule();
-                        preferences.storeValue(PrefValue.RULE_CHILD_RULE, ruleChildRule);
+                        //Rule1 Main
+                        ruleMain = dataSnapshot.child("RuleMain").getValue(RuleMain.class);
+                        preferences.storeValue(PrefValue.RULE_MAIN_QUANTUM, ruleMain.getQuantum());
+                        preferences.storeValue(PrefValue.RULE_MAIN_STATUS, ruleMain.status);
 
-                        ruleChildStatus = ruleChild.status;
-                        preferences.storeValue(PrefValue.RULE_CHILD_STATUS, ruleChildStatus);
-
-                        //Rule Main
-                        RuleMain ruleMain = dataSnapshot.child("RuleMain").getValue(RuleMain.class);
-                        Log.d(TAG, "[RuleMain] [quantum : " + ruleMain.quantum + " ]");
-                        Log.d(TAG, "[RuleMain] [status : " + ruleMain.status + " ]");
-
-                        ruleMainQuantum = ruleMain.getQuantum();
-                        preferences.storeValue(PrefValue.RULE_MAIN_QUANTUM, ruleMainQuantum);
-
-                        ruleMainStatus = ruleMain.status;
-                        preferences.storeValue(PrefValue.RULE_MAIN_STATUS, ruleMainStatus);
+                        //CurrentRule
+                        currentRuleChild = Integer.parseInt(dataSnapshot.child("CurrentRule").getValue().toString());
 
                         //Text
                         final String text = dataSnapshot.child("Text").getValue().toString();
@@ -485,21 +487,38 @@ public class Rule {
     }
 
     public void minusRuleNumber(byte ruleType) {
-
         switch (ruleType) {
             case RULE_NORMAL:
-                if (ruleChildStatus.equals(STATUS_ON)) {
-                    if (ruleChildQuantum > 0)
-                        ruleChildQuantum = ruleChildQuantum - 1;
-                    Log.d(TAG, "ruleChildQuantum : " + ruleChildQuantum);
+                switch ((int)currentRuleChild){
+                    case 1:
+                        if (rule1.status.equals(STATUS_ON)) {
+                            if (rule1.quantum > 0)
+                                rule1.quantum = rule1.quantum - 1;
+                            Log.d(TAG, "rule1.quantum : " + rule1.quantum);
+                        }
+                        break;
+                    case 2:
+                        if (rule2.status.equals(STATUS_ON)) {
+                            if (rule2.quantum > 0)
+                                rule2.quantum = rule2.quantum - 1;
+                            Log.d(TAG, "rule2.quantum : " + rule2.quantum);
+                        }
+                        break;
+                    case 3:
+                        if (rule3.status.equals(STATUS_ON)) {
+                            if (rule3.quantum > 0)
+                                rule3.quantum = rule3.quantum - 1;
+                            Log.d(TAG, "rule3.quantum : " + rule3.quantum);
+                        }
+                        break;
                 }
                 break;
 
             case RULE_MAIN:
-                if (ruleMainStatus.equals(STATUS_ON)) {
-                    if (ruleMainQuantum > 0)
-                        ruleMainQuantum = ruleMainQuantum - 1;
-                    Log.d(TAG, "ruleMainQuantum : " + ruleMainQuantum);
+                if (ruleMain.status.equals(STATUS_ON)) {
+                    if (ruleMain.quantum > 0)
+                        ruleMain.quantum = ruleMain.quantum - 1;
+                    Log.d(TAG, "ruleMain.quantum : " + ruleMain.quantum);
                 }
                 break;
         }

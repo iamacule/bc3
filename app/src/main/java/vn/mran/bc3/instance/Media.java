@@ -33,6 +33,16 @@ public class Media {
         }
     }
 
+    public static void pausePlayBackgroundMusic() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            } else {
+                mediaPlayer.start();
+            }
+        }
+    }
+
     public static void stopShortSound() {
         if (shakePlayer != null) {
             shakePlayer.release();
