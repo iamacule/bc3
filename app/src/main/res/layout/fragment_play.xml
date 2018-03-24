@@ -223,9 +223,8 @@
                 android:gravity="center|bottom"
                 android:orientation="vertical">
 
-
                 <vn.mran.bc3.widget.CustomTextView
-                    android:id="@+id/txtTitle"
+                    android:id="@+id/txtText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
@@ -239,7 +238,7 @@
                     android:shadowDy="4"
                     android:shadowRadius="4"
                     android:singleLine="true"
-                    android:textColor="@color/red_300"
+                    android:textColor="@color/yellow_text"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>
         </FrameLayout>

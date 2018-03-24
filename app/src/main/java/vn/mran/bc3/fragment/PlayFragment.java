@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import vn.mran.bc3.R;
 import vn.mran.bc3.constant.PrefValue;
 import vn.mran.bc3.draw.DrawPlay;
+import vn.mran.bc3.helper.Lock;
 import vn.mran.bc3.helper.Log;
 import vn.mran.bc3.helper.OnDoubleClickListener;
-import vn.mran.bc3.instance.Media;
 import vn.mran.bc3.instance.Rule;
 import vn.mran.bc3.mvp.presenter.PlayPresenter;
 import vn.mran.bc3.mvp.view.PlayView;
@@ -39,7 +39,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
     private ImageView imgBack;
 
     private CustomTextView txtAction;
-    private CustomTextView txtTitle;
+    private CustomTextView txtText;
 
     private DrawPlay drawPlay;
 
@@ -54,6 +54,8 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
 
     private boolean isEnableMainRuleBySecretKey = false;
 
+    private Lock lock;
+
     @Override
     public void initLayout() {
         resultLayout = new ResultLayout(v);
@@ -62,7 +64,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         imgSound = v.findViewById(R.id.imgSound);
         imgBack = v.findViewById(R.id.imgBack);
         txtAction = v.findViewById(R.id.txtAction);
-        txtTitle = v.findViewById(R.id.txtTitle);
+        txtText = v.findViewById(R.id.txtText);
         drawPlay = v.findViewById(R.id.drawPlay);
     }
 
@@ -70,6 +72,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
     public void initValue() {
         Rule.getInstance().setOnFireBaseDataChanged(this);
         presenter = new PlayPresenter(this, getContext());
+        lock = new Lock(1000);
 //        ((DrawParallaxStar) v.findViewById(R.id.drawParallaxStar)).setStarSize((int) screenWidth / 10);
 
         imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 3));
@@ -77,6 +80,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         TouchEffect.addAlpha(imgAction);
         TouchEffect.addAlpha(imgBack);
         TouchEffect.addAlpha(imgSound);
+        TouchEffect.addAlpha(v.findViewById(R.id.imgMusic));
 
         bpResultArray[0] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.bau), screenWidth / 3);
         bpResultArray[1] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.cua), screenWidth / 3);
@@ -164,6 +168,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         v.findViewById(R.id.btnMain1).setOnClickListener(this);
         v.findViewById(R.id.btnMain2).setOnClickListener(this);
         v.findViewById(R.id.btnMain3).setOnClickListener(this);
+        v.findViewById(R.id.imgMusic).setOnClickListener(this);
         imgSound.setOnClickListener(this);
         imgBack.setOnClickListener(this);
 
@@ -236,6 +241,11 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         }
     }
 
+    @Override
+    public void onSoundEffect(int id) {
+        getMedia().playShortSound(id);
+    }
+
     private void minusNumberOffRule() {
         Rule.getInstance().minusRuleNumber(Rule.getInstance().RULE_NORMAL);
         if (isEnableMainRuleBySecretKey)
@@ -257,6 +267,14 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
             case R.id.imgSound:
                 Log.d(TAG, "btnSound clicked");
                 switchSound();
+                break;
+
+            case R.id.imgMusic:
+                if (lock.enable) {
+                    lock.lock();
+                    Log.d(TAG, "imgMusic clicked");
+                    getMedia().changeBackgroundMusic();
+                }
                 break;
 
             case R.id.imgBack:
@@ -331,9 +349,9 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                     @Override
                     public void run() {
                         if (!isPlaySound) {
-                            Media.playBackgroundMusic(getContext());
+                            getMedia().playBackgroundMusic();
                         } else {
-                            Media.stopBackgroundMusic();
+                            getMedia().stopBackgroundMusic();
                         }
                     }
                 }));
@@ -396,16 +414,13 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
 //        ps2.oneShot(v.findViewById(R.id.fireworks), 70);
     }
 
-    @Override
-    public void onTextChanged(String text) {
-        updateText(text);
-    }
-
     private void updateText(final String text) {
-        Task.runOnUIThread(new Runnable() {
+        Task.runOnUIThread(getActivity(), new Runnable() {
             @Override
             public void run() {
-                txtTitle.setText(presenter.updateText(text));
+                txtText.setText(presenter.updateText(text));
+                txtText.setSelected(true);
+                Log.d(TAG, "Text = " + txtText.getText());
             }
         });
     }

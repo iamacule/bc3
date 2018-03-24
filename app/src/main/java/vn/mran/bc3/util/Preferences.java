@@ -60,4 +60,8 @@ public final class Preferences {
     public long getLongValue(String key, long defaultValue){
         return pref.getLong(key,defaultValue);
     }
+
+    public int getIntValue(String key, int defaultValue){
+        return pref.getInt(key,defaultValue);
+    }
 }

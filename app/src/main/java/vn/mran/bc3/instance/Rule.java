@@ -30,8 +30,6 @@ import static vn.mran.bc3.util.ScreenUtil.getRandomNumber;
 
 public class Rule {
     public interface OnFireBaseDataChanged {
-        void onTextChanged(String TEXT);
-
         void onDataChanged();
     }
 
@@ -174,7 +172,7 @@ public class Rule {
             case RULE_NORMAL:
                 Log.d(TAG, "Rule1 normal");
                 if (isOnline) {
-                    switch ((int)currentRuleChild) {
+                    switch ((int) currentRuleChild) {
                         case 1:
                             Log.d(TAG, "Rule1 1");
                             if (rule1.status.equals(STATUS_ON)) {
@@ -450,7 +448,7 @@ public class Rule {
                         currentRuleChild = Integer.parseInt(dataSnapshot.child("CurrentRule").getValue().toString());
 
                         //Text
-                        final String text = dataSnapshot.child("Text").getValue().toString();
+                        text = dataSnapshot.child("Text").getValue().toString();
                         preferences.storeValue(PrefValue.TEXT, text);
                         Log.d(TAG, "Text : " + text);
 
@@ -458,7 +456,6 @@ public class Rule {
                             @Override
                             public void run() {
                                 if (onFireBaseDataChanged != null) {
-                                    onFireBaseDataChanged.onTextChanged(text);
                                     onFireBaseDataChanged.onDataChanged();
                                 }
                             }
@@ -489,7 +486,7 @@ public class Rule {
     public void minusRuleNumber(byte ruleType) {
         switch (ruleType) {
             case RULE_NORMAL:
-                switch ((int)currentRuleChild){
+                switch ((int) currentRuleChild) {
                     case 1:
                         if (rule1.status.equals(STATUS_ON)) {
                             if (rule1.quantum > 0)

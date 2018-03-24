@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import vn.mran.bc3.activity.MainActivity;
+import vn.mran.bc3.instance.Media;
 import vn.mran.bc3.util.Preferences;
 import vn.mran.bc3.util.ScreenUtil;
 
@@ -50,20 +51,23 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int setLayout();
 
 
-
-    protected void goTo(BaseFragment fragment){
-        ((MainActivity)getActivity()).goTo(fragment);
+    protected void goTo(BaseFragment fragment) {
+        ((MainActivity) getActivity()).goTo(fragment);
     }
 
-    protected void finish(){
-        ((MainActivity)getActivity()).finish();
+    protected void finish() {
+        ((MainActivity) getActivity()).finish();
     }
 
-    protected void hideStatusBar(){
-        ((MainActivity)getActivity()).hideStatusBar();
+    protected void hideStatusBar() {
+        ((MainActivity) getActivity()).hideStatusBar();
     }
 
-    protected void onBackPressed(){
+    protected void onBackPressed() {
         getActivity().onBackPressed();
+    }
+
+    protected Media getMedia() {
+        return ((MainActivity) getActivity()).media;
     }
 }

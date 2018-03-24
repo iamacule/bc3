@@ -1,5 +1,7 @@
 package vn.mran.bc3.constant;
 
+import vn.mran.bc3.R;
+
 /**
  * Created by Mr An on 28/11/2017.
  */
@@ -11,10 +13,12 @@ public interface PrefValue {
     String DEFAULT_TEXT = "Chúc các bạn chơi vui vẻ !";
     int DEFAULT_ADDITIONAL_NUMBER = 0;
     long DEFAULT_RULE = 1;
+    int DEFAULT_MUSIC_ID = R.raw.wc_2002;
     String DEFAULT_ASSIGN_ARRAYS = "0 1 2 3 4 5";
 
-    String CURRENT_RULE_CHILD = "CURRENT_RULE_CHILD";
+    String MUSIC_ID = "MUSIC_ID";
 
+    String CURRENT_RULE_CHILD = "CURRENT_RULE_CHILD";
 
     String RULE_1_ADDITIONAL_NUMBER = "RULE_1_ADDITIONAL_NUMBER";
     String RULE_1_ASSIGN_ARRAYS = "RULE_1_ASSIGN_ARRAYS";

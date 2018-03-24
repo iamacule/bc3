@@ -35,6 +35,8 @@ public class DrawPlay extends View {
         void onTouch();
 
         void onLidChanged(boolean isOpened);
+
+        void onSoundEffect(int id);
     }
 
     private final String TAG = getClass().getSimpleName();
@@ -228,7 +230,7 @@ public class DrawPlay extends View {
                     Task.runOnUIThread(new Runnable() {
                         @Override
                         public void run() {
-                            Media.playShortSound(getContext(), R.raw.shake_dice);
+                            onDrawLidUpdate.onSoundEffect(R.raw.shake_dice);
                             onDrawLidUpdate.onLidChanged(isLidOpened);
                         }
                     });
@@ -243,7 +245,7 @@ public class DrawPlay extends View {
             @Override
             public void run() {
                 if (sound)
-                    Media.playShortSound(getContext(), R.raw.open_close);
+                    onDrawLidUpdate.onSoundEffect(R.raw.open_close);
                 onDrawLidUpdate.onLidChanged(isLidOpened);
             }
         });

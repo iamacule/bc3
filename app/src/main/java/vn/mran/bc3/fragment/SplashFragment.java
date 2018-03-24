@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import vn.mran.bc3.R;
 import vn.mran.bc3.base.BaseFragment;
 import vn.mran.bc3.constant.PrefValue;
-import vn.mran.bc3.instance.Media;
 import vn.mran.bc3.util.MyAnimation;
 import vn.mran.bc3.widget.CustomTextView;
 
@@ -43,7 +42,7 @@ public class SplashFragment extends BaseFragment {
                     @Override
                     public void onAnimationStart(Animation animation) {
                         if (preferences.getBooleanValue(PrefValue.SETTING_SOUND, true)) {
-                            Media.playBackgroundMusic(getContext());
+                            getMedia().playBackgroundMusic();
                         }
                     }
 
@@ -66,6 +65,6 @@ public class SplashFragment extends BaseFragment {
 
     @Override
     public int setLayout() {
-        return R.layout.fragment_main;
+        return R.layout.fragment_splash;
     }
 }

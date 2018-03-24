@@ -22,6 +22,7 @@ import vn.mran.bc3.instance.Rule;
 public class MainActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     private FragmentNavigator fragmentNavigator;
+    public Media media;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Rule.init(getApplicationContext());
         initFragmentNavigator();
         hideStatusBar();
+        media = new Media(getApplicationContext());
     }
 
     public void onBackPressed() {
@@ -75,12 +77,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Media.pausePlayBackgroundMusic();
+        media.pausePlayBackgroundMusic();
     }
 
     @Override
     protected void onStop() {
-        Media.pausePlayBackgroundMusic();
+        media.pausePlayBackgroundMusic();
         super.onStop();
+    }
+
+    public  void startBackgroundMusic(){
+        media.playBackgroundMusic();
     }
 }
