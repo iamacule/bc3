@@ -2,10 +2,15 @@ package vn.mran.bc3.fragment;
 
 import vn.mran.bc3.base.BaseFragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import com.plattysoft.leonids.ParticleSystem;
+import com.plattysoft.leonids.modifiers.ScaleModifier;
 
 import vn.mran.bc3.R;
 import vn.mran.bc3.constant.PrefValue;
@@ -18,6 +23,7 @@ import vn.mran.bc3.mvp.presenter.PlayPresenter;
 import vn.mran.bc3.mvp.view.PlayView;
 import vn.mran.bc3.util.MyAnimation;
 import vn.mran.bc3.util.ResizeBitmap;
+import vn.mran.bc3.util.ScreenUtil;
 import vn.mran.bc3.util.Task;
 import vn.mran.bc3.util.TouchEffect;
 import vn.mran.bc3.widget.CustomTextView;
@@ -387,31 +393,29 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
 
     @Override
     public void startFireworks() {
-//        Log.d(TAG, "Start fireworks");
-//        int marginMin = (int) screenWidth / 3;
-//        int marginRightMax = (int) screenWidth * 2 / 3;
-//        int marginBottomMax = (int) (screenHeight - (screenWidth / 3));
-//
-//        int marginLeft = ScreenUtil.getRandomNumber(marginMin, marginRightMax);
-//        int marginTop = ScreenUtil.getRandomNumber(marginMin, marginBottomMax);
-//
-//        @SuppressLint("WrongViewCast") FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.findViewById(R.id.fireworks).getLayoutParams();
-//        params.setMargins(marginLeft, marginTop, 0, 0);
-//        v.findViewById(R.id.fireworks).setLayoutParams(params);
-//
-//        ParticleSystem ps = new ParticleSystem(getActivity(), 100, R.drawable.ball_1, 800);
-//        ps.setScaleRange(0.7f, 1.3f);
-//        ps.setSpeedRange(0.1f, 0.25f);
-//        ps.setRotationSpeedRange(90, 180);
-//        ps.setFadeOut(200, new AccelerateInterpolator());
-//        ps.oneShot(v.findViewById(R.id.fireworks), 70);
-//
-//        ParticleSystem ps2 = new ParticleSystem(getActivity(), 100, R.drawable.ball_1, 800);
-//        ps2.setScaleRange(0.7f, 1.3f);
-//        ps2.setSpeedRange(0.1f, 0.25f);
-//        ps.setRotationSpeedRange(90, 180);
-//        ps2.setFadeOut(200, new AccelerateInterpolator());
-//        ps2.oneShot(v.findViewById(R.id.fireworks), 70);
+        Log.d(TAG, "Start fireworks");
+        int marginMin = (int) screenWidth / 3;
+        int marginRightMax = (int) screenWidth * 2 / 3;
+        int marginBottomMax = (int) (screenHeight - (screenWidth / 3));
+
+        int marginLeft = ScreenUtil.getRandomNumber(marginMin, marginRightMax);
+        int marginTop = ScreenUtil.getRandomNumber(marginMin, marginBottomMax);
+
+        @SuppressLint("WrongViewCast")
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.findViewById(R.id.fireworks).getLayoutParams();
+        params.setMargins(marginLeft, marginTop, 0, 0);
+        v.findViewById(R.id.fireworks).setLayoutParams(params);
+
+        int[] ballArrays = new int[]{R.drawable.ball_1, R.drawable.ball_2, R.drawable.ball_3, R.drawable.ball_4};
+
+        new ParticleSystem(getActivity(), 10, ballArrays[ScreenUtil.getRandomNumber(0, ballArrays.length - 1)], 3000)
+                .setSpeedByComponentsRange(-0.1f, 0.1f, -0.1f, 0.02f)
+                .setAcceleration(0.000003f, 90)
+                .setInitialRotationRange(0, 360)
+                .setRotationSpeed(120)
+                .setFadeOut(2000)
+                .addModifier(new ScaleModifier(0f, 1.5f, 0, 1500))
+                .oneShot(v.findViewById(R.id.fireworks), 10);
     }
 
     private void updateText(final String text) {
