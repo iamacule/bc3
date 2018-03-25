@@ -23,40 +23,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.75"
+                    android:layout_weight="0.85"
                     android:gravity="center|top">
 
                     <include layout="@layout/animal_choose_layout" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.1"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:orientation="horizontal">
-
-                        <android.support.v4.widget.Space
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5" />
-
-                        <LinearLayout
-                            android:id="@+id/btnRule3"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5" />
-                    </LinearLayout>
-
-                    <android.support.v4.widget.Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.75" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -73,9 +43,9 @@
 
                         <ImageView
                             android:id="@+id/imgBack"
-                            android:layout_marginLeft="10dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -94,7 +64,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="10dp"/>
+                            android:layout_marginRight="10dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -104,8 +74,7 @@
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.46">
-        </android.support.v4.widget.Space>
+            android:layout_weight="0.46"></android.support.v4.widget.Space>
 
 
         <FrameLayout
@@ -113,33 +82,51 @@
             android:layout_height="0dp"
             android:layout_weight="0.14">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
+                android:gravity="center"
+                android:orientation="horizontal"
                 android:paddingTop="5dp">
-
-                <ImageView
-                    android:id="@+id/imgAction"
+                <LinearLayout
+                    android:id="@+id/btnRule3"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"/>
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center|top"
+                    android:paddingTop="5dp">
 
-                <vn.mran.bc3.widget.CustomTextView
-                    android:id="@+id/txtAction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="3"
-                    android:shadowDy="3"
-                    android:shadowRadius="3"
-                    android:text="@string/shake"
-                    android:textColor="@color/red_300"
-                    android:textSize="@dimen/button_text_size_large_play" />
-            </FrameLayout>
+                    <ImageView
+                        android:id="@+id/imgAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                    <vn.mran.bc3.widget.CustomTextView
+                        android:id="@+id/txtAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:shadowColor="@color/black"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="3"
+                        android:text="@string/shake"
+                        android:textColor="@color/red_300"
+                        android:textSize="@dimen/button_text_size_large_play" />
+                </FrameLayout>
+                <LinearLayout
+                    android:id="@+id/btnRuleMain"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
 
 
             <LinearLayout
@@ -251,10 +238,6 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center" />
 
-    <!--<vn.mran.bc3.draw.DrawParallaxStar-->
-    <!--android:id="@+id/drawParallaxStar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent" />-->
     <LinearLayout
         android:id="@+id/fireworks"
         android:layout_width="1dp"

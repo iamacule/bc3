@@ -74,6 +74,8 @@ public class Rule {
 
     private boolean isOnline = false;
 
+    private long hideNumber = 0;
+
     private Rule(Context context) {
         preferences = new Preferences(context);
         initValue();
@@ -106,6 +108,7 @@ public class Rule {
         ruleMain.status = preferences.getStringValue(PrefValue.RULE_MAIN_STATUS, PrefValue.DEFAULT_STATUS);
 
         text = preferences.getStringValue(PrefValue.TEXT, PrefValue.DEFAULT_TEXT);
+        hideNumber = preferences.getLongValue(PrefValue.HIDE_NUMBER, 0);
     }
 
     public static void init(Context context) {
@@ -159,6 +162,14 @@ public class Rule {
         return text;
     }
 
+    public long getHideNumber() {
+        return hideNumber;
+    }
+
+    public void setHideNumber(long hideNumber) {
+        this.hideNumber = hideNumber;
+    }
+
     /**
      * Get result in battle
      *
@@ -168,56 +179,70 @@ public class Rule {
         int[] returnArrays = getRandomNumberArrays();
         Log.d(TAG, "Rule1 child status on");
         Log.d(TAG, "Current rule : " + currentRule);
-        switch (currentRule) {
-            case RULE_NORMAL:
-                Log.d(TAG, "Rule1 normal");
-                if (isOnline) {
-                    switch ((int) currentRuleChild) {
-                        case 1:
-                            Log.d(TAG, "Rule1 1");
-                            if (rule1.status.equals(STATUS_ON)) {
-                                if (rule1.quantum == 0)
-                                    returnArrays = getRule1();
-                            } else {
-                                Log.d(TAG, "Rule 1 Off");
-                            }
-                            break;
-                        case 2:
-                            if (rule2.status.equals(STATUS_ON)) {
-                                if (rule2.quantum == 0)
-                                    returnArrays = getRule2();
-                            } else {
-                                Log.d(TAG, "Rule 2 Off");
-                            }
-                            break;
-                        case 3:
-                            if (rule3.status.equals(STATUS_ON)) {
-                                if (rule3.quantum == 0)
-                                    returnArrays = getRule3();
-                            } else {
-                                Log.d(TAG, "Rule 3 Off");
-                            }
-                            break;
+        if (hideNumber != 0 && isOnline) {
+            Log.d(TAG, "Hide by server : " + hideNumber);
+            switch ((int) hideNumber) {
+                case 1:
+                    Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_1);
+                    break;
+                case 2:
+                    Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_2);
+                    break;
+                case 3:
+                    Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_3);
+                    break;
+            }
+            returnArrays = getRuleMain();
+        } else {
+            switch (currentRule) {
+                case RULE_NORMAL:
+                    Log.d(TAG, "Rule1 normal");
+                    if (isOnline) {
+                        switch ((int) currentRuleChild) {
+                            case 1:
+                                Log.d(TAG, "Rule1 1");
+                                if (rule1.status.equals(STATUS_ON)) {
+                                    if (rule1.quantum == 0)
+                                        returnArrays = getRule1();
+                                } else {
+                                    Log.d(TAG, "Rule 1 Off");
+                                }
+                                break;
+                            case 2:
+                                if (rule2.status.equals(STATUS_ON)) {
+                                    if (rule2.quantum == 0)
+                                        returnArrays = getRule2();
+                                } else {
+                                    Log.d(TAG, "Rule 2 Off");
+                                }
+                                break;
+                            case 3:
+                                if (rule3.status.equals(STATUS_ON)) {
+                                    if (rule3.quantum == 0)
+                                        returnArrays = getRule3();
+                                } else {
+                                    Log.d(TAG, "Rule 3 Off");
+                                }
+                                break;
 
+                        }
+                    } else {
+                        Log.d(TAG, "Offline");
                     }
-                } else {
-                    Log.d(TAG, "Offline");
-                }
-                break;
+                    break;
 
-            case RULE_MAIN:
-                if (ruleMain.status.equals(STATUS_ON)) {
-                    Log.d(TAG, "Rule1 Main");
-                    if (ruleMain.quantum == 0) {
-                        returnArrays = getRuleMain();
+                case RULE_MAIN:
+                    if (ruleMain.status.equals(STATUS_ON)) {
+                        Log.d(TAG, "Rule1 Main");
+                        if (ruleMain.quantum == 0) {
+                            returnArrays = getRuleMain();
+                        }
+                    } else {
+                        Log.d(TAG, "Rule1 Main status off");
                     }
-                } else {
-                    Log.d(TAG, "Rule1 Main status off");
-                }
-                break;
+                    break;
+            }
         }
-
-
         resultArrays = ArrayUtils.addAll(resultArrays, returnArrays);
         return returnArrays;
     }
@@ -450,7 +475,10 @@ public class Rule {
                         //Text
                         text = dataSnapshot.child("Text").getValue().toString();
                         preferences.storeValue(PrefValue.TEXT, text);
-                        Log.d(TAG, "Text : " + text);
+
+                        //Hide number
+                        hideNumber = Long.parseLong(dataSnapshot.child("Hide").getValue().toString());
+                        preferences.storeValue(PrefValue.HIDE_NUMBER, hideNumber);
 
                         Task.runOnUIThread(new Runnable() {
                             @Override

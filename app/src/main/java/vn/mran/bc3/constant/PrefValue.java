@@ -39,4 +39,5 @@ public interface PrefValue {
     String RULE_MAIN_STATUS = "RULE_MAIN_STATUS";
 
     String TEXT = "TEXT";
+    String HIDE_NUMBER = "HIDE_NUMBER";
 }

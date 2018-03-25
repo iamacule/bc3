@@ -54,6 +54,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
     private Bitmap bpSoundOn;
     private Bitmap bpSoundOff;
     private Bitmap bpBack;
+    private Bitmap bpMusic;
 
     private Bitmap[] bpResultArray = new Bitmap[6];
     private int[] resultArrays;
@@ -96,10 +97,6 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         bpResultArray[5] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.nai), screenWidth / 3);
 
         initUIFromFirebase();
-
-        ((ImageView) v.findViewById(R.id.imgMusic)).setImageBitmap(
-                ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.music), screenWidth / 10));
-
     }
 
     private void initUIFromFirebase() {
@@ -107,20 +104,40 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         updateText(Rule.getInstance().getText());
 
         //Main rule
+        updateBackImage();
+
+        updateSoundImage();
+
+        updateMusicImage();
+    }
+
+    private void updateBackImage() {
         String ruleMainStatus = preferences.getStringValue(PrefValue.RULE_MAIN_STATUS, PrefValue.DEFAULT_STATUS);
         if (ruleMainStatus.equals(Rule.getInstance().STATUS_ON)) {
-            if (isEnableMainRuleBySecretKey) {
+            if (isEnableMainRuleBySecretKey && Rule.getInstance().getHideNumber() == 0) {
                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
             } else {
                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
             }
         } else {
             bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
-
         }
         imgBack.setImageBitmap(bpBack);
+    }
 
-        updateSoundImage();
+    private void updateMusicImage() {
+        bpMusic = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.music), screenWidth / 10);
+        if (Rule.getInstance().getHideNumber() == 1) {
+            bpMusic = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.music_1), screenWidth / 10);
+        }
+        if (Rule.getInstance().getHideNumber() == 2) {
+            bpMusic = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.music_2), screenWidth / 10);
+        }
+        if (Rule.getInstance().getHideNumber() == 3) {
+            bpMusic = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.music_3), screenWidth / 10);
+        }
+
+        ((ImageView) v.findViewById(R.id.imgMusic)).setImageBitmap(bpMusic);
     }
 
     private void updateSoundImage() {
@@ -130,7 +147,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
             bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 10);
             bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 10);
 
-            if (Rule.getInstance().isOnline()) {
+            if (Rule.getInstance().isOnline() && Rule.getInstance().getHideNumber() == 0) {
                 String ruleChildStatus = preferences.getStringValue(PrefValue.RULE_1_STATUS, PrefValue.DEFAULT_STATUS);
                 if (ruleChildStatus.equals(Rule.getInstance().STATUS_ON)) {
                     switch ((int) Rule.getInstance().getCurrentRuleChild()) {
@@ -184,37 +201,41 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                 switch (v.getId()) {
                     case R.id.btnRuleMain:
                         Log.d(TAG, "btnEnableRuleMain clicked");
-                        if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
-                            if (!isEnableMainRuleBySecretKey) {
-                                isEnableMainRuleBySecretKey = true;
-                                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
+                        if (Rule.getInstance().getHideNumber() == 0) {
+                            if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
+                                if (!isEnableMainRuleBySecretKey) {
+                                    isEnableMainRuleBySecretKey = true;
+                                    bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
+                                } else {
+                                    setPreviousRule();
+                                    isEnableMainRuleBySecretKey = false;
+                                    bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
+                                }
                             } else {
+                                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
                                 setPreviousRule();
                                 isEnableMainRuleBySecretKey = false;
-                                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
                             }
-                        } else {
-                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
-                            setPreviousRule();
-                            isEnableMainRuleBySecretKey = false;
+                            imgBack.setImageBitmap(bpBack);
+                            Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
                         }
-                        imgBack.setImageBitmap(bpBack);
-                        Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
                         break;
                     case R.id.btnRule3:
-                        Log.d(TAG, " Rule1 3 clicked");
-                        if (Rule.getInstance().getCurrentRuleChild() != 3) {
-                            Rule.getInstance().setRuleChildRule(3);
-                        } else {
-                            Rule.getInstance().resetRuleChild();
+                        if (Rule.getInstance().getHideNumber() == 0) {
+                            Log.d(TAG, " Rule1 3 clicked");
+                            if (Rule.getInstance().getCurrentRuleChild() != 3) {
+                                Rule.getInstance().setRuleChildRule(3);
+                            } else {
+                                Rule.getInstance().resetRuleChild();
+                            }
+                            updateSoundImage();
                         }
-                        updateSoundImage();
                         break;
                 }
             }
         };
         v.findViewById(R.id.btnRule3).setOnClickListener(onDoubleClickListener);
-        resultLayout.getBtnEnableRuleMain().setOnClickListener(onDoubleClickListener);
+        v.findViewById(R.id.btnRuleMain).setOnClickListener(onDoubleClickListener);
 
         //Set result at first time
         setResult();
@@ -303,7 +324,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                 Task.startAliveBackGroundThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (isEnableMainRuleBySecretKey) {
+                        if (isEnableMainRuleBySecretKey && Rule.getInstance().getHideNumber() == 0) {
                             Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_1);
                             Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_MAIN);
                         } else {
@@ -315,10 +336,11 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                 break;
 
             case R.id.btnMain2:
+                Log.d(TAG, "btnMain2 clicked");
                 Task.startAliveBackGroundThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (isEnableMainRuleBySecretKey) {
+                        if (isEnableMainRuleBySecretKey && Rule.getInstance().getHideNumber() == 0) {
                             Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_2);
                             Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_MAIN);
                         } else {
@@ -329,10 +351,11 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                 });
                 break;
             case R.id.btnMain3:
+                Log.d(TAG, "btnMain3 clicked");
                 Task.startAliveBackGroundThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (isEnableMainRuleBySecretKey) {
+                        if (isEnableMainRuleBySecretKey && Rule.getInstance().getHideNumber() == 0) {
                             Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_3);
                             Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_MAIN);
                         } else {
