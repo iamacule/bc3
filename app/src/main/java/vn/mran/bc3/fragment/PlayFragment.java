@@ -80,7 +80,6 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         Rule.getInstance().setOnFireBaseDataChanged(this);
         presenter = new PlayPresenter(this, getContext());
         lock = new Lock(1000);
-//        ((DrawParallaxStar) v.findViewById(R.id.drawParallaxStar)).setStarSize((int) screenWidth / 10);
 
         imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 3));
 
@@ -148,22 +147,19 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
             bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 10);
 
             if (Rule.getInstance().isOnline() && Rule.getInstance().getHideNumber() == 0) {
-                String ruleChildStatus = preferences.getStringValue(PrefValue.RULE_1_STATUS, PrefValue.DEFAULT_STATUS);
-                if (ruleChildStatus.equals(Rule.getInstance().STATUS_ON)) {
-                    switch ((int) Rule.getInstance().getCurrentRuleChild()) {
-                        case 1:
-                            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 10);
-                            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 10);
-                            break;
-                        case 2:
-                            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 10);
-                            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 10);
-                            break;
-                        case 3:
-                            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 10);
-                            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 10);
-                            break;
-                    }
+                switch ((int) Rule.getInstance().getCurrentRuleChild()) {
+                    case 1:
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 10);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 10);
+                        break;
+                    case 2:
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 10);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 10);
+                        break;
+                    case 3:
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 10);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 10);
+                        break;
                 }
             }
 
@@ -221,12 +217,14 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                         }
                         break;
                     case R.id.btnRule3:
+                        Log.d(TAG, " Rule1 3 clicked");
                         if (Rule.getInstance().getHideNumber() == 0) {
-                            Log.d(TAG, " Rule1 3 clicked");
-                            if (Rule.getInstance().getCurrentRuleChild() != 3) {
-                                Rule.getInstance().setRuleChildRule(3);
-                            } else {
-                                Rule.getInstance().resetRuleChild();
+                            if (!Rule.getInstance().getRule3().status.equals(PrefValue.DEFAULT_STATUS)) {
+                                if (Rule.getInstance().getCurrentRuleChild() != 3) {
+                                    Rule.getInstance().setRuleChildRule(3);
+                                } else {
+                                    Rule.getInstance().resetRuleChild();
+                                }
                             }
                             updateSoundImage();
                         }

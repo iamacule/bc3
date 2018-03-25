@@ -170,6 +170,30 @@ public class Rule {
         this.hideNumber = hideNumber;
     }
 
+    public void setRule1(Rule1 rule1) {
+        this.rule1 = rule1;
+    }
+
+    public void setRule2(Rule2 rule2) {
+        this.rule2 = rule2;
+    }
+
+    public void setRule3(Rule3 rule3) {
+        this.rule3 = rule3;
+    }
+
+    public Rule1 getRule1() {
+        return rule1;
+    }
+
+    public Rule2 getRule2() {
+        return rule2;
+    }
+
+    public Rule3 getRule3() {
+        return rule3;
+    }
+
     /**
      * Get result in battle
      *
@@ -203,7 +227,7 @@ public class Rule {
                                 Log.d(TAG, "Rule1 1");
                                 if (rule1.status.equals(STATUS_ON)) {
                                     if (rule1.quantum == 0)
-                                        returnArrays = getRule1();
+                                        returnArrays = getResultRule1();
                                 } else {
                                     Log.d(TAG, "Rule 1 Off");
                                 }
@@ -211,7 +235,7 @@ public class Rule {
                             case 2:
                                 if (rule2.status.equals(STATUS_ON)) {
                                     if (rule2.quantum == 0)
-                                        returnArrays = getRule2();
+                                        returnArrays = getResultRule2();
                                 } else {
                                     Log.d(TAG, "Rule 2 Off");
                                 }
@@ -219,7 +243,7 @@ public class Rule {
                             case 3:
                                 if (rule3.status.equals(STATUS_ON)) {
                                     if (rule3.quantum == 0)
-                                        returnArrays = getRule3();
+                                        returnArrays = getResultRule3();
                                 } else {
                                     Log.d(TAG, "Rule 3 Off");
                                 }
@@ -271,7 +295,7 @@ public class Rule {
      *
      * @return
      */
-    private int[] getRule2() {
+    private int[] getResultRule2() {
         int tong = 0;
         int[] assignNumberArray = rule2.getAssignNumberArray();
         int range = 3;
@@ -336,7 +360,7 @@ public class Rule {
      *
      * @return
      */
-    private int[] getRule1() {
+    private int[] getResultRule1() {
         int tong = 0;
         int[] assignNumberArray = rule1.getAssignNumberArray();
 
@@ -386,7 +410,7 @@ public class Rule {
      *
      * @return
      */
-    private int[] getRule3() {
+    private int[] getResultRule3() {
         int tong = 0;
         int[] assignNumberArray = rule3.getAssignNumberArray();
 
