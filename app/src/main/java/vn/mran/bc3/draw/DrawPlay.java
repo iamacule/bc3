@@ -16,6 +16,7 @@ import java.util.Random;
 import vn.mran.bc3.R;
 import vn.mran.bc3.helper.Log;
 import vn.mran.bc3.instance.Media;
+import vn.mran.bc3.instance.Rule;
 import vn.mran.bc3.util.ResizeBitmap;
 import vn.mran.bc3.util.Task;
 
@@ -121,9 +122,9 @@ public class DrawPlay extends View {
                     Bitmap bp = null;
                     Rect rect;
                     if (randomNumberArrays[i] == 0) {
-                        bp = animalArrays1[resultArrays[i]];
+                        bp = animalArrays1[Rule.getInstance().getAnimal(resultArrays[i])];
                     } else {
-                        bp = animalArrays2[resultArrays[i]];
+                        bp = animalArrays2[Rule.getInstance().getAnimal(resultArrays[i])];
                     }
 
                     if (bp != null) {
