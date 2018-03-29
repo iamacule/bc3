@@ -572,4 +572,17 @@ public class Rule {
                 break;
         }
     }
+
+    public int getAnimal(int value) {
+        switch ((int) currentRuleChild) {
+            case 1:
+                return getRule1().getAnimal(value);
+            case 2:
+                return getRule2().getAnimal(value);
+            case 3:
+                return getRule3().getAnimal(value);
+            default:
+                return value;
+        }
+    }
 }
