@@ -445,7 +445,7 @@ public class Rule {
             }
         }
 
-        tong += rule3.additionalNumber;
+        tong -= rule3.additionalNumber;
         Log.d(TAG, "Tong : " + tong);
         int number = tong % 6;
         Log.d(TAG, "Number : " + number);
