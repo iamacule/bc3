@@ -284,8 +284,8 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         resultArrays = Rule.getInstance().getResult();
         drawPlay.setResultArrays(resultArrays);
         resultLayout.updateResult(bpResultArray[Rule.getInstance().getAnimal(resultArrays[0])],
-                bpResultArray[Rule.getInstance().getAnimal(resultArrays[0])],
-                bpResultArray[Rule.getInstance().getAnimal(resultArrays[0])]);
+                bpResultArray[Rule.getInstance().getAnimal(resultArrays[1])],
+                bpResultArray[Rule.getInstance().getAnimal(resultArrays[2])]);
     }
 
     @Override
