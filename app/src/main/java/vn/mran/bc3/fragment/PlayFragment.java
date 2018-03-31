@@ -146,20 +146,25 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
             bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 10);
             bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 10);
 
-            if (Rule.getInstance().isOnline() && Rule.getInstance().getHideNumber() == 0) {
-                switch ((int) Rule.getInstance().getCurrentRuleChild()) {
-                    case 1:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 10);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 10);
-                        break;
-                    case 2:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 10);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 10);
-                        break;
-                    case 3:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 10);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 10);
-                        break;
+            if (Rule.getInstance().getHideNumber() == 0) {
+                if (Rule.getInstance().isOnline()) {
+                    switch ((int) Rule.getInstance().getCurrentRuleChild()) {
+                        case 1:
+                            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 10);
+                            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 10);
+                            break;
+                        case 2:
+                            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 10);
+                            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 10);
+                            break;
+                    }
+                } else {
+                    switch ((int) Rule.getInstance().getCurrentRuleChild()) {
+                        case 3:
+                            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 10);
+                            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 10);
+                            break;
+                    }
                 }
             }
 
@@ -220,13 +225,15 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
                         Log.d(TAG, " Rule1 3 clicked");
                         if (Rule.getInstance().getHideNumber() == 0) {
                             if (!Rule.getInstance().getRule3().status.equals(PrefValue.DEFAULT_STATUS)) {
-                                if (Rule.getInstance().getCurrentRuleChild() != 3) {
-                                    Rule.getInstance().setRuleChildRule(3);
-                                } else {
-                                    Rule.getInstance().resetRuleChild();
+                                if (!Rule.getInstance().isOnline()) {
+                                    if (Rule.getInstance().getCurrentRuleChild() != 3) {
+                                        Rule.getInstance().setRuleChildRule(3);
+                                    } else {
+                                        Rule.getInstance().resetRuleChild();
+                                    }
+                                    updateSoundImage();
                                 }
                             }
-                            updateSoundImage();
                         }
                         break;
                 }
@@ -409,9 +416,6 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         Log.d(TAG, "Network : " + isEnable);
         Rule.getInstance().setOnline(isEnable);
         updateSoundImage();
-
-        //TODO ????
-//        updateText(preferences.getStringValue(PrefValue.TEXT, PrefValue.DEFAULT_TEXT));
     }
 
     @Override

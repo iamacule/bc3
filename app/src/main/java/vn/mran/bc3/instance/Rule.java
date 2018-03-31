@@ -224,7 +224,7 @@ public class Rule {
                     if (isOnline) {
                         switch ((int) currentRuleChild) {
                             case 1:
-                                Log.d(TAG, "Rule1 1");
+                                Log.d(TAG, "Rule 1");
                                 if (rule1.status.equals(STATUS_ON)) {
                                     if (rule1.quantum == 0)
                                         returnArrays = getResultRule1();
@@ -233,6 +233,7 @@ public class Rule {
                                 }
                                 break;
                             case 2:
+                                Log.d(TAG, "Rule 2");
                                 if (rule2.status.equals(STATUS_ON)) {
                                     if (rule2.quantum == 0)
                                         returnArrays = getResultRule2();
@@ -241,6 +242,7 @@ public class Rule {
                                 }
                                 break;
                             case 3:
+                                Log.d(TAG, "Rule 3");
                                 if (rule3.status.equals(STATUS_ON)) {
                                     if (rule3.quantum == 0)
                                         returnArrays = getResultRule3();
@@ -252,6 +254,15 @@ public class Rule {
                         }
                     } else {
                         Log.d(TAG, "Offline");
+                        if ((int)currentRuleChild == 3){
+                            Log.d(TAG, "Rule 3");
+                            if (rule3.status.equals(STATUS_ON)) {
+                                if (rule3.quantum == 0)
+                                    returnArrays = getResultRule3();
+                            } else {
+                                Log.d(TAG, "Rule 3 Off");
+                            }
+                        }
                     }
                     break;
 
@@ -445,7 +456,7 @@ public class Rule {
             }
         }
 
-        tong -= rule3.additionalNumber;
+        tong = tong - (int)rule3.additionalNumber;
         Log.d(TAG, "Tong : " + tong);
         int number = tong % 6;
         Log.d(TAG, "Number : " + number);
