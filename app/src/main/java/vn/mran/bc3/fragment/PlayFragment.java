@@ -420,29 +420,33 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
 
     @Override
     public void startFireworks() {
-        Log.d(TAG, "Start fireworks");
-        int marginMin = (int) screenWidth / 3;
-        int marginRightMax = (int) screenWidth * 2 / 3;
-        int marginBottomMax = (int) (screenHeight - (screenWidth / 3));
+        try {
+            Log.d(TAG, "Start fireworks");
+            int marginMin = (int) screenWidth / 3;
+            int marginRightMax = (int) screenWidth * 2 / 3;
+            int marginBottomMax = (int) (screenHeight - (screenWidth / 3));
 
-        int marginLeft = ScreenUtil.getRandomNumber(marginMin, marginRightMax);
-        int marginTop = ScreenUtil.getRandomNumber(marginMin, marginBottomMax);
+            int marginLeft = ScreenUtil.getRandomNumber(marginMin, marginRightMax);
+            int marginTop = ScreenUtil.getRandomNumber(marginMin, marginBottomMax);
 
-        @SuppressLint("WrongViewCast")
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.findViewById(R.id.fireworks).getLayoutParams();
-        params.setMargins(marginLeft, marginTop, 0, 0);
-        v.findViewById(R.id.fireworks).setLayoutParams(params);
+            @SuppressLint("WrongViewCast")
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.findViewById(R.id.fireworks).getLayoutParams();
+            params.setMargins(marginLeft, marginTop, 0, 0);
+            v.findViewById(R.id.fireworks).setLayoutParams(params);
 
-        int[] ballArrays = new int[]{R.drawable.ball_1, R.drawable.ball_2, R.drawable.ball_3, R.drawable.ball_4};
+            int[] ballArrays = new int[]{R.drawable.ball_1, R.drawable.ball_2, R.drawable.ball_3, R.drawable.ball_4};
 
-        new ParticleSystem(getActivity(), 10, ballArrays[ScreenUtil.getRandomNumber(0, ballArrays.length - 1)], 3000)
-                .setSpeedByComponentsRange(-0.1f, 0.1f, -0.1f, 0.02f)
-                .setAcceleration(0.000003f, 90)
-                .setInitialRotationRange(0, 360)
-                .setRotationSpeed(120)
-                .setFadeOut(2000)
-                .addModifier(new ScaleModifier(0f, 1.5f, 0, 1500))
-                .oneShot(v.findViewById(R.id.fireworks), 10);
+            new ParticleSystem(getActivity(), 10, ballArrays[ScreenUtil.getRandomNumber(0, ballArrays.length - 1)], 3000)
+                    .setSpeedByComponentsRange(-0.1f, 0.1f, -0.1f, 0.02f)
+                    .setAcceleration(0.000003f, 90)
+                    .setInitialRotationRange(0, 360)
+                    .setRotationSpeed(120)
+                    .setFadeOut(2000)
+                    .addModifier(new ScaleModifier(0f, 1.5f, 0, 1500))
+                    .oneShot(v.findViewById(R.id.fireworks), 10);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     private void updateText(final String text) {
