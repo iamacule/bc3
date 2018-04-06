@@ -11,6 +11,7 @@ import com.plattysoft.leonids.ParticleSystem;
 
 import vn.mran.bc3.R;
 import vn.mran.bc3.base.BaseFragment;
+import vn.mran.bc3.helper.Log;
 import vn.mran.bc3.util.ResizeBitmap;
 import vn.mran.bc3.util.Task;
 import vn.mran.bc3.util.TouchEffect;
@@ -27,6 +28,8 @@ public class ChooserFragment extends BaseFragment implements View.OnClickListene
     private ParticleSystem ps2;
     private ParticleSystem ps3;
     private ParticleSystem ps4;
+
+    private final String TAG = getClass().getSimpleName();
 
     @Override
     public void initLayout() {
@@ -73,18 +76,24 @@ public class ChooserFragment extends BaseFragment implements View.OnClickListene
                 Task.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        ps1 = new ParticleSystem(getActivity(), 50, R.drawable.ball_1, 1000);
-                        ps1.setSpeedRange(0.1f, 0.25f)
-                                .emit(v.findViewById(R.id.lnAnimation), 100);
-                        ps2 = new ParticleSystem(getActivity(), 50, R.drawable.ball_2, 1000);
-                        ps2.setSpeedRange(0.1f, 0.25f)
-                                .emit(v.findViewById(R.id.lnAnimation), 100);
-                        ps3 = new ParticleSystem(getActivity(), 50, R.drawable.ball_3, 1000);
-                        ps3.setSpeedRange(0.1f, 0.25f)
-                                .emit(v.findViewById(R.id.lnAnimation2), 100);
-                        ps4 = new ParticleSystem(getActivity(), 50, R.drawable.ball_4, 1000);
-                        ps4.setSpeedRange(0.1f, 0.25f)
-                                .emit(v.findViewById(R.id.lnAnimation2), 100);
+
+                        try {
+                            ps1 = new ParticleSystem(getActivity(), 50, R.drawable.ball_1, 1000);
+                            ps1.setSpeedRange(0.1f, 0.25f)
+                                    .emit(v.findViewById(R.id.lnAnimation), 100);
+                            ps2 = new ParticleSystem(getActivity(), 50, R.drawable.ball_2, 1000);
+                            ps2.setSpeedRange(0.1f, 0.25f)
+                                    .emit(v.findViewById(R.id.lnAnimation), 100);
+                            ps3 = new ParticleSystem(getActivity(), 50, R.drawable.ball_3, 1000);
+                            ps3.setSpeedRange(0.1f, 0.25f)
+                                    .emit(v.findViewById(R.id.lnAnimation2), 100);
+                            ps4 = new ParticleSystem(getActivity(), 50, R.drawable.ball_4, 1000);
+                            ps4.setSpeedRange(0.1f, 0.25f)
+                                    .emit(v.findViewById(R.id.lnAnimation2), 100);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.getMessage());
+                        }
+
                     }
                 });
             }
