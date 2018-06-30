@@ -193,6 +193,7 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
         v.findViewById(R.id.btnMain2).setOnClickListener(this);
         v.findViewById(R.id.btnMain3).setOnClickListener(this);
         v.findViewById(R.id.imgMusic).setOnClickListener(this);
+        v.findViewById(R.id.root).setOnClickListener(this);
         imgSound.setOnClickListener(this);
         imgBack.setOnClickListener(this);
 
@@ -298,6 +299,10 @@ public class PlayFragment extends BaseFragment implements DrawPlay.OnDrawLidUpda
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.root:
+                Log.d(TAG, "root clicked");
+                break;
+
             case R.id.imgSound:
                 Log.d(TAG, "btnSound clicked");
                 switchSound();
